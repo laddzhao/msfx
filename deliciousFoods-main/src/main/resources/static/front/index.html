@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="content-type" content="no-cache, must-revalidate"/>
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT"/>
+    <title>首页</title>
+    <link href="css/swiper-5.4.5/swiper.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/my.css" rel="stylesheet">
+    <link href="css/nav.css" rel="stylesheet">
+
+    <style>
+
+        .notice-box li {
+            float: left;
+            text-align: center;
+        }
+
+        .notice-box li img {
+            width: 100%
+        }
+
+    </style>
+</head>
+<body>
+<div id="wrapper" style="padding-bottom: 20px">
+    <div class="container">
+        <!-- 头部开始 -->
+        <div class="nx-header">
+            <div style="display: flex;width: 100%; height: 30px; line-height: 30px; background-color: #eee;">
+
+                <div style="flex: 5; text-align: right">
+                    <span v-if="user.name">
+                    欢迎您，{{user.name}}
+                    <a style="margin-right: 50px; color: blue" href="javascript:void(0)" @click="logout">退出</a>
+                    </span>
+                    <a v-if="!(user.name)" href="/end/page/login.html" target="_blank" style="margin-right: 10px; color: #666666">登录</a>
+                    <a href="/end/page/register.html" target="_blank" style="margin-right: 30px; color: #666666">注册</a>
+                </div>
+            </div>
+
+
+            <div>
+                <ul style="display: flex; background-color: orange; height: 30px">
+                    <li class="nav-item"><a class="active" href="index.html">首页</a></li>
+                    <li class="nav-item"><a href="advertiserInfo.html">系统公告</a></li>
+					<li class="nav-item"><a href="foodsMenuInfo.html">菜谱</a></li>
+<!--					<li class="nav-item"><a href="foodsMaterialInfo.html">食材</a></li>-->
+					<li class="nav-item"><a href="collectInfo.html">收藏</a></li>
+					<li class="nav-item"><a href="notesInfo.html">笔记</a></li>
+					<li class="nav-item"><a href="newsInfo.html">饮食资讯</a></li>
+					<li class="nav-item"><a href="messageInfo.html">趣味答题</a></li>
+
+                    <li v-if="isShow" class="nav-item"><a href="/end/page/index.html" target="_blank">进入后台系统</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- 头部结束 -->
+    </div>
+    <div class="container" style="margin-top: 5px">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img class="carousel-img" src="/front/img/carousel/1.jpg" alt=""></div>
+                        <div class="swiper-slide"><img class="carousel-img" src="/front/img/carousel/2.jpg" alt=""></div>
+                        <div class="swiper-slide"><img class="carousel-img" src="/front/img/carousel/3.jpg" alt=""></div>
+                        <div class="swiper-slide"><img class="carousel-img" src="/front/img/carousel/4.jpg" alt=""></div>
+                    </div>
+                    <!-- 如果需要分页器 -->
+                    <div class="swiper-pagination"></div>
+                    <!-- 如果需要导航按钮 -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div style="padding: 20px; font-size: 20px; color: orangered"><b>每日精选菜谱</b></div>
+        <!--菜谱-->
+        <div>
+            <div style="width: 25%; display: inline-block; padding: 10px; text-align: center" v-for="item in tableData" :key="item.id">
+                <a :href="'foodsMenuInfoDetail.html?id='+item.id">
+                    <img style="width: 100%; height: 180px; border-radius: 10px" :src='"/files/download/" + item.fileId' alt="">
+                </a>
+                <div style="padding-top: 10px"><b>{{item.name}}</b></div>
+                <div> #{{item.tips}}# {{item.description}}</div>
+            </div>
+        </div>
+
+        <!-- 食材 -->
+        <div style="padding: 20px; font-size: 20px; color: orangered"><b>热门食材</b></div>
+        <!--食材-->
+        <div>
+            <div style="width: 20%; display: inline-block; padding: 10px; text-align: center" v-for="item in materialTableData" :key="item.id">
+                <a :href="'foodsMaterialInfoDetail.html?id='+item.id">
+                    <img style="width: 100%; height: 180px; border-radius: 10px" :src='"/files/download/" + item.fileId' alt="">
+                </a>
+                <div style="padding-top: 10px"><b>{{item.name}}</b></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--js库文件-->
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/vue2.6.11/axios.js"></script>
+<script src="js/vue2.6.11/vue.min.js"></script>
+<script src="js/swiper-5.4.5/swiper.min.js"></script>
+
+
+<script>
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            // direction: 'vertical', // 垂直切换选项
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },//可选选项，自动滑动
+            loop: true, // 循环模式选项
+            speed: 2000,
+
+            // 如果需要分页器
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+
+            // 如果需要前进后退按钮
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            }
+        });
+
+        // 鼠标移入停止自动滚动
+        var $swiperSide = $('.swiper-slide');
+        $swiperSide.mouseenter(function () {
+            mySwiper.autoplay.stop();
+        });
+        // 鼠标移出开始自动滚动
+        $swiperSide.mouseleave(function () {
+            mySwiper.autoplay.start();
+        });
+    });
+
+    new Vue({
+        el: '#wrapper',
+        data: {
+            tableData: [],  // 菜谱数据
+            materialTableData: [],  // 食材数据
+            activeIndex: 0,
+            user: {},
+            isShow: false,
+            date: null
+        },
+        created: function () {
+            axios.get('/auth').then(res => {
+                if (res.data.code === '0') {
+                    this.user = res.data.data;
+                    if (this.user.level !== 3) {
+                        this.isShow = true;
+                    }
+                }
+            });
+
+            this.loadTable();
+            this.loadMaTable();
+
+        },
+        methods: {
+            loadTable() {
+                axios.get("/foodsMenuInfo/page/all?" + "pageSize=8").then(res => {
+                    if (res.data.code === '0') {
+                        this.tableData = res.data.data.list;
+                    } else {
+                        alert(res.data.msg);
+                    }
+                });
+            },
+            loadMaTable() {
+                axios.get("/foodsMaterialInfo/page/all?pageSize=10").then(res => {
+                    if (res.data.code === '0') {
+                        this.materialTableData = res.data.data.list;
+                    } else {
+                        alert(res.data.msg);
+                    }
+                });
+            },
+            logout() {
+                axios.get("/logout").then(res => {
+                    if(res.data.code === '0') {
+                        location.href = '/front/index.html';
+                    } else {
+                        msg('error', res.data.msg);
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

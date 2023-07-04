@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.SubClassifyInfoDao">
+
+    <select id="findByName" resultType="com.example.vo.SubClassifyInfoVo">
+        select `sub_classify_info`.*, `classify_info`.name as classifyName from `sub_classify_info`
+		left join `classify_info` on `sub_classify_info`.classifyId = `classify_info`.id
+        where 1 = 1
+        <if test="name != null and name != '' and name != 'all'">
+            and `sub_classify_info`.`name` like concat('%', #{name}, '%')
+        </if>
+        order by `sub_classify_info`.id
+    </select>
+
+    <select id="findByClassifyId" resultType="com.example.vo.SubClassifyInfoVo">
+         select * from sub_classify_info where classifyId = #{classifyId}
+    </select>
+
+
+</mapper>

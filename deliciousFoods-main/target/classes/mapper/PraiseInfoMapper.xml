@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.PraiseInfoDao">
+
+    <select id="findByName" resultType="com.example.vo.PraiseInfoVo">
+        select `praise_info`.*, `notes_info`.name as notesName from `praise_info`
+		left join `notes_info` on `praise_info`.notesId = `notes_info`.id
+        where 1 = 1
+        <if test="name != null and name != '' and name != 'all'">
+            and `praise_info`.`name` like concat('%', #{name}, '%')
+        </if>
+        order by `praise_info`.id
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from `praise_info`
+        <where>
+            <if test="notesId != null">
+                and notesId = #{notesId}
+            </if>
+            <if test="foodsId != null">
+                and foodsId = #{foodsId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByUser" resultType="com.example.vo.PraiseInfoVo">
+        select * from praise_info where userId = #{user.id}
+            <if test="praiseInfo.notesId != null">
+                and notesId = #{praiseInfo.notesId}
+            </if>
+            <if test="praiseInfo.foodsId != null">
+                and foodsId = #{praiseInfo.foodsId}
+            </if>
+    </select>
+
+
+</mapper>

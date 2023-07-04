@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.CollectInfoDao">
+
+    <select id="findByName" resultType="com.example.vo.CollectInfoVo">
+        select `collect_info`.*, `foods_menu_info`.name as foodsName from `collect_info`
+		left join `foods_menu_info` on `collect_info`.foodsId = `foods_menu_info`.id
+        where 1 = 1
+        <if test="name != null and name != '' and name != 'all'">
+            and `collect_info`.`name` like concat('%', #{name}, '%')
+        </if>
+        <if test="userId != null and userId != ''">
+            and `collect_info`.`userId` = #{userId}
+        </if>
+        <if test="level != null and level != ''">
+            and `collect_info`.`level` = #{level}
+        </if>
+        order by `collect_info`.id
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from `collect_info`
+        <where>
+            <if test="notesId != null">
+                and notesId = #{notesId}
+            </if>
+            <if test="foodsId != null">
+                and foodsId = #{foodsId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByUser" resultType="com.example.vo.CollectInfoVo">
+        select * from collect_info where userId = #{user.id}
+        <if test="collectInfo.notesId != null">
+            and notesId = #{collectInfo.notesId}
+        </if>
+        <if test="collectInfo.foodsId != null">
+            and foodsId = #{collectInfo.foodsId}
+        </if>
+    </select>
+
+
+</mapper>

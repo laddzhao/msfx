@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.NotesInfoDao">
+
+    <select id="findByName" resultType="com.example.vo.NotesInfoVo">
+        select `notes_info`.*, `user_info`.name as userName from `notes_info`
+		left join `user_info` on `notes_info`.userId = `user_info`.id
+        where 1 = 1
+        <if test="name != null and name != '' and name != 'all'">
+            and `notes_info`.`name` like concat('%', #{name}, '%')
+        </if>
+        <if test="userId != null and userId != ''">
+            and `notes_info`.`userId` = #{userId}
+        </if>
+        <if test="status != null and status != ''">
+            and `notes_info`.`status` = 1
+        </if>
+        order by `notes_info`.id desc
+    </select>
+
+</mapper>

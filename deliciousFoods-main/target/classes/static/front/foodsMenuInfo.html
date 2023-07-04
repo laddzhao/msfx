@@ -1,0 +1,262 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="content-type" content="no-cache, must-revalidate"/>
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT"/>
+    <title>菜谱</title>
+    <link href="/front/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/front/css/my.css" rel="stylesheet">
+    <link href="/front/css/nav.css" rel="stylesheet">
+    <link href="css/element/index.css" rel="stylesheet"/>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper" v-cloak>
+    <div class="container">
+        <!-- 头部开始 -->
+        <div class="nx-header">
+            <div style="display: flex;width: 100%; height: 30px; line-height: 30px; background-color: #eee;">
+                <div style="flex: 5; text-align: right">
+                    <span v-if="user.name">
+                    欢迎您，{{user.name}}
+                    <a style="margin-right: 50px; color: blue" href="javascript:void(0)" @click="logout">退出</a>
+                    </span>
+                    <a v-if="!(user.name)" href="/end/page/login.html" target="_blank" style="margin-right: 10px; color: #666666">登录</a>
+                    <a href="/end/page/register.html" target="_blank" style="margin-right: 30px; color: #666666">注册</a>
+                </div>
+            </div>
+
+
+
+            <div>
+                <ul style="display: flex; background-color: orange; height: 30px">
+                    <li class="nav-item"><a href="index.html">首页</a></li>
+                    <li class="nav-item"><a href="advertiserInfo.html">系统公告</a></li>
+					<li class="nav-item"><a class="active" href="foodsMenuInfo.html">菜谱</a></li>
+<!--					<li class="nav-item"><a href="foodsMaterialInfo.html">食材</a></li>-->
+					<li class="nav-item"><a href="collectInfo.html">收藏</a></li>
+					<li class="nav-item"><a href="notesInfo.html">笔记</a></li>
+					<li class="nav-item"><a href="newsInfo.html">饮食资讯</a></li>
+					<li class="nav-item"><a href="messageInfo.html">趣味答题</a></li>
+
+                    <li v-if="isShow" class="nav-item"><a href="/end/page/index.html" target="_blank">进入后台系统</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- 头部结束 -->
+    </div>
+    <div class="container"  style="margin-top: 10px">
+        <div class="row" style="margin-bottom: 20px; border-bottom: 1px solid #ccc">
+            <div class="col-md-12" v-for="item in classify" :key="item.id" style="padding: 10px;">
+                <div class="col-md-2">
+                    <b>{{item.name}}</b>
+                </div>
+                <div class="col-md-10" style="color: #666">
+                <span v-for="subItem in item.subList" style="margin-left: 30px; cursor: pointer;"
+                      :key="subItem.id" :class="{active: subItem.id === activeId}" @click="handleClickClassify(subItem.id)">
+                   {{subItem.name}}
+                </span>
+                </div>
+            </div>
+        </div>
+
+
+        <!--菜谱-->
+        <div>
+            <div style="width: 25%; display: inline-block; padding: 10px; text-align: center" v-for="item in tableData" :key="item.id">
+                <a :href="'foodsMenuInfoDetail.html?id='+item.id">
+                    <img style="width: 100%; height: 180px; border-radius: 10px" :src='"/files/download/" + item.fileId' alt="">
+                </a>
+                <div style="padding-top: 10px"><b>{{item.name}}</b></div>
+                <div> #{{item.tips}}# {{item.description}}</div>
+            </div>
+            <div style="text-align: center;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ disabled: preActive }">
+                            <a class="page-link" href="javascript:void(0)"
+                               @click="loadTable(pageInfo.pageNum - 1)">上一页</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)" v-if="pageInfo.pageNum > 1" @click="loadTable(pageInfo.pageNum - 1)">{{pageInfo.pageNum - 1}}</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" aria-disabled="true" href="javascript:void(0)">{{pageInfo.pageNum}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)" v-if="pageInfo.hasNextPage" @click="loadTable(pageInfo.pageNum + 1)">{{pageInfo.pageNum + 1}}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: nextActive }">
+                            <a class="page-link" href="javascript:void(0)" @click="loadTable(pageInfo.hasNextPage? (pageInfo.pageNum + 1) : pageInfo.pageNum)">下一页</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+    </div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    文件预览
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cancel">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="height: 300px; text-align: center">
+                    <img id="view-img" v-if="imgShow" :src="url" alt="" style="width: 400px;">
+                    <video v-if="videoShow" id="video-control" :src="url" controls="controls" style="width: 80%">
+                        您的浏览器不支持 video 标签。
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.metisMenu.js"></script>
+<script src="js/vue2.6.11/axios.js"></script>
+<script src="js/vue2.6.11/vue.min.js"></script>
+<script src="js/element/index.js"></script>
+
+<script>
+    function msg(type, msg) {
+        Vue.prototype.$message({
+            type: type, // success（成功）、warning（警告）, error(错误)
+            message: msg,
+            duration: 2000,
+            offset: 100,
+            center: true,
+        })
+    }
+
+    new Vue({
+        el: '#wrapper',
+        data: {
+            imgShow: false,
+            videoShow: true,
+            url: '',
+            tableData: [],
+            pageInfo: {},
+            preActive: true,
+            nextActive: true,
+            user: {},
+            isShow: false,
+            classify: [],
+            activeId: 1,
+        },
+
+        created: function() {
+            axios.get('/auth').then(res => {
+                if (res.data.code === '0') {
+                    this.user = res.data.data;
+                    if (this.user.level !== 3) {
+                        this.isShow = true;
+                    }
+                }
+            });
+            axios.get("/classifyInfo").then(res => {
+                if (res.data.code === '0') {
+                    this.classify = res.data.data;
+                    if(this.classify.length && this.classify[0].subList.length) {
+                        this.activeId = this.classify[0].subList[0].id;
+                        this.loadTable(1);
+                    }
+                } else {
+                    alert(res.data.msg);
+                }
+            });
+
+        },
+
+        methods: {
+            loadTable(pageNum) {
+                axios.get("/foodsMenuInfo/page/all?classifyId=" + this.activeId + "&pageNum=" + pageNum).then(res => {
+                    if (res.data.code === '0') {
+                        this.tableData = res.data.data.list;
+                        this.pageInfo = res.data.data;
+                        this.preActive = !(this.pageInfo.hasPreviousPage);
+                        this.nextActive = !(this.pageInfo.hasNextPage);
+                    } else {
+                        alert(res.data.msg);
+                    }
+                });
+            },
+            viewModal: function (data) {
+                axios.get("/foodsMenuInfo/" + data.id).then(res => {
+                    if (res.data.code === '0') {
+                        let info = res.data.data;
+                        this.url = '/files/download/' + info.fileId;
+                        if (/\.(png|jpg|gif|jpeg|webp)$/.test(info.fileName)) {
+                            this.imgShow = true;
+                            this.videoShow = false;
+
+                            let img = new Image();
+                            img.src = this.url;
+                            // 加载完成执行
+                            img.onload = function(){
+                                let scale = img.width / img.height;  // 图片的宽高比
+                                let width = 270 * scale;  // 先按照高度等比缩小
+                                if(width > 570) {   // 如果缩小后的宽度超出模态框（模态框宽598px），则再次按照宽度等比缩小
+                                    let height = 570 / scale;
+                                    $('#view-img').css('width', '570px').css('height', height + 'px');
+                                } else {
+                                    $('#view-img').css('width', width + 'px').css('height', '270px');
+                                }
+                            };
+                        } else if (/\.mp4$/.test(info.fileName)) {
+                            this.imgShow = false;
+                            this.videoShow = true;
+                        } else {
+                            alert('不支持该格式的预览');
+                            return;
+                        }
+                        $("#myModal").modal('show');
+                    } else {
+                        alert(res.data.msg);
+                    }
+                });
+            },
+            cancel: function () {
+                $("#video-control")[0].pause();
+            },
+            downFile: function (id) {
+                axios.get("/foodsMenuInfo/" + id).then(res => {
+                    if (res.data.code === '0') {
+                        location.href = '/files/download/' + res.data.data.fileId;
+                    } else {
+                        alert(res.data.msg);
+                    }
+                });
+            },
+            logout() {
+                axios.get("/logout").then(res => {
+                    if(res.data.code === '0') {
+                        location.href = '/front/index.html';
+                    } else {
+                        msg('error', res.data.msg);
+                    }
+                })
+            },
+            handleClickClassify(classifyId) {
+                this.activeId = classifyId;
+                this.loadTable(this.pageInfo.pageNum);
+            },
+        }
+    })
+</script>
+</body>
+</html>

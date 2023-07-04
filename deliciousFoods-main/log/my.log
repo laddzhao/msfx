@@ -1,0 +1,58 @@
+2023-07-04 16:25:55.502  INFO 5616 --- [main] com.example.Application                  : Starting Application on DESKTOP-4LS0RFK with PID 5616 (D:\5e\deliciousFoods-main\target\classes started by 赵林阳 in D:\5e\deliciousFoods-main)
+2023-07-04 16:25:55.509  INFO 5616 --- [main] com.example.Application                  : No active profile set, falling back to default profiles: default
+2023-07-04 16:25:56.169  WARN 5616 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.example]' package. Please check your configuration.
+2023-07-04 16:25:56.829  INFO 5616 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-07-04 16:25:56.844  INFO 5616 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-07-04 16:25:56.845  INFO 5616 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/9.0.12
+2023-07-04 16:25:56.851  INFO 5616 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.36] using APR version [1.7.2].
+2023-07-04 16:25:56.851  INFO 5616 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2023-07-04 16:25:56.851  INFO 5616 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-07-04 16:25:56.856  INFO 5616 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1t  7 Feb 2023]
+2023-07-04 16:25:56.979  INFO 5616 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-07-04 16:25:56.979  INFO 5616 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1429 ms
+2023-07-04 16:25:56.999  INFO 5616 --- [main] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2023-07-04 16:25:57.003  INFO 5616 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2023-07-04 16:25:57.003  INFO 5616 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2023-07-04 16:25:57.003  INFO 5616 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'formContentFilter' to: [/*]
+2023-07-04 16:25:57.003  INFO 5616 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2023-07-04 16:25:57.747  INFO 5616 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2023-07-04 16:25:57.847  INFO 5616 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2023-07-04 16:25:57.967  INFO 5616 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-07-04 16:25:57.969  INFO 5616 --- [main] com.example.Application                  : Started Application in 2.866 seconds (JVM running for 3.814)
+2023-07-04 16:25:59.847  INFO 5616 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-07-04 16:25:59.847  INFO 5616 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-07-04 16:25:59.853  INFO 5616 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2023-07-04 16:26:05.215  INFO 5616 --- [http-nio-8080-exec-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-07-04 16:26:05.314  INFO 5616 --- [http-nio-8080-exec-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-07-04 16:31:39.474  INFO 5616 --- [Thread-7] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2023-07-04 16:31:39.474  INFO 5616 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-07-04 16:31:39.482  INFO 5616 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-07-04 16:33:48.773  INFO 3536 --- [main] com.example.Application                  : Starting Application on DESKTOP-4LS0RFK with PID 3536 (D:\5e\deliciousFoods-main\target\classes started by 赵林阳 in D:\5e\deliciousFoods-main)
+2023-07-04 16:33:48.776  INFO 3536 --- [main] com.example.Application                  : No active profile set, falling back to default profiles: default
+2023-07-04 16:33:49.287  WARN 3536 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.example]' package. Please check your configuration.
+2023-07-04 16:33:49.665  INFO 3536 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-07-04 16:33:49.675  INFO 3536 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-07-04 16:33:49.675  INFO 3536 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/9.0.12
+2023-07-04 16:33:49.679  INFO 3536 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.36] using APR version [1.7.2].
+2023-07-04 16:33:49.680  INFO 3536 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2023-07-04 16:33:49.680  INFO 3536 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-07-04 16:33:49.682  INFO 3536 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1t  7 Feb 2023]
+2023-07-04 16:33:49.779  INFO 3536 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-07-04 16:33:49.780  INFO 3536 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 964 ms
+2023-07-04 16:33:49.796  INFO 3536 --- [main] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2023-07-04 16:33:49.798  INFO 3536 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2023-07-04 16:33:49.799  INFO 3536 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2023-07-04 16:33:49.799  INFO 3536 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'formContentFilter' to: [/*]
+2023-07-04 16:33:49.799  INFO 3536 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2023-07-04 16:33:50.463  INFO 3536 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2023-07-04 16:33:50.561  INFO 3536 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2023-07-04 16:33:50.656  INFO 3536 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-07-04 16:33:50.658  INFO 3536 --- [main] com.example.Application                  : Started Application in 2.178 seconds (JVM running for 3.009)
+2023-07-04 16:33:55.687  INFO 3536 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-07-04 16:33:55.688  INFO 3536 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-07-04 16:33:55.692  INFO 3536 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2023-07-04 16:34:01.312  INFO 3536 --- [http-nio-8080-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-07-04 16:34:01.385  INFO 3536 --- [http-nio-8080-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-07-04 16:34:06.621  INFO 3536 --- [Thread-7] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2023-07-04 16:34:06.622  INFO 3536 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-07-04 16:34:06.628  INFO 3536 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

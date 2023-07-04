@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.FoodsMaterialInfoDao">
+
+    <select id="findByNameAndId" resultType="com.example.vo.FoodsMaterialInfoVo">
+        select `foods_material_info`.* from `foods_material_info`
+
+        where 1 = 1
+        <if test="name != null and name != '' and name != 'all'">
+            and (`foods_material_info`.`name` like concat('%', #{name}, '%') or `foods_material_info`.`description` like concat('%', #{name}, '%'))
+        </if>
+        <if test="id != null and id != 0">
+            and `foods_material_info`.`id` = #{id}
+        </if>
+        order by `foods_material_info`.`id`
+    </select>
+
+</mapper>

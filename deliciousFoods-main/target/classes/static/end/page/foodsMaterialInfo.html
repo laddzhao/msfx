@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="content-type" content="no-cache, must-revalidate" />
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT"/>
+    <title>食材信息</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../css/font-awesome.css" rel="stylesheet"/>
+    <link href="../css/basic.css" rel="stylesheet"/>
+    <link href="../css/custom.css" rel="stylesheet"/>
+    <link href="../css/element/index.css" rel="stylesheet"/>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div id="wrapper" v-cloak>
+    <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">后端管理系统</a>
+        </div>
+
+        <div class="header-right">
+            <a href="javascript:void(0)" class="btn btn-info" @click="logout" title="退出登录">
+                <i class="fa fa-sign-out fa-2x"></i>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <a href="javascript:void(0)" class="btn btn-info" title="跳转到个人信息" @click="personalPage">
+                <i class="fa fa-user fa-2x"></i>
+            </a>
+        </div>
+
+        <div class="header-right" style="padding-top: 25px">欢迎你，{{ user.name }}</div>
+
+        <div class="header-left">
+            <a href="/front/index.html" class="btn btn-info" title="跳转到首页">
+                <i class="fa fa-dot-circle-o fa-2x"></i>
+            </a>
+        </div>
+    </nav>
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <a href="index.html"><i class="fa fa-dashboard"></i>系统首页</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-yelp "></i>信息展示 <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse in">
+						<li v-if="authority.indexOf(1) != -1">
+							<a href="adminInfo.html"><i class="fa fa-table"></i>管理员信息</a>
+						</li>
+						<li v-if="authority.indexOf(2) != -1">
+							<a href="userInfo.html"><i class="fa fa-table"></i>用户信息</a>
+						</li>
+						<li v-if="authority.indexOf(3) != -1">
+							<a href="classifyInfo.html"><i class="fa fa-table"></i>菜谱大类信息</a>
+						</li>
+						<li v-if="authority.indexOf(4) != -1">
+							<a href="subClassifyInfo.html"><i class="fa fa-table"></i>菜谱小类信息</a>
+						</li>
+						<li v-if="authority.indexOf(5) != -1">
+							<a href="foodsMenuInfo.html"><i class="fa fa-table"></i>菜谱信息</a>
+						</li>
+						<li v-if="authority.indexOf(6) != -1">
+							<a href="foodsMaterialInfo.html" class="active-menu"><i class="fa fa-table"></i>食材信息</a>
+						</li>
+						<li v-if="authority.indexOf(7) != -1">
+							<a href="collectInfo.html"><i class="fa fa-table"></i>收藏信息</a>
+						</li>
+						<li v-if="authority.indexOf(8) != -1">
+							<a href="praiseInfo.html"><i class="fa fa-table"></i>笔记点赞信息</a>
+						</li>
+						<li v-if="authority.indexOf(9) != -1">
+							<a href="notesInfo.html"><i class="fa fa-table"></i>笔记信息</a>
+						</li>
+						<li v-if="authority.indexOf(10) != -1">
+							<a href="newsInfo.html"><i class="fa fa-table"></i>饮食资讯信息</a>
+						</li>
+						<li v-if="authority.indexOf(1000001) != -1">
+							<a href="advertiserInfo.html"><i class="fa fa-table"></i>公告信息</a>
+						</li>
+						<li v-if="authority.indexOf(1000002) != -1">
+							<a href="messageInfo.html"><i class="fa fa-table"></i>趣味答题信息</a>
+						</li>
+
+                        <li>
+                            <a href="javascript:void(0)" @click="personalPage"><i class="fa fa-user"></i>个人信息</a>
+                        </li>
+                    </ul>
+                </li>
+				<li>
+					<a href="notesInfoComment.html"><i class="fa fa-file"></i>笔记信息评论</a>
+				</li>
+
+                <li>
+                    <a href="updatePassword.html"><i class="fa fa-unlock-alt"></i>修改密码</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" @click="logout"><i class="fa fa-power-off"></i>退出登录</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-subhead-line">这里是食材信息信息，所有文件支持下载功能，视频和图片支持预览功能。</h1>
+                </div>
+            </div>
+            <!-- /. ROW  -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    文件管理
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <div class="nx-table-header">
+                            <button class="btn btn-sm btn-primary" @click="add()">新增</button>
+
+                            <input type="text" placeholder="请输入文件名称" v-model="name" @keyup.enter="loadTable(1)">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+										<th>名称</th>
+										<th>描述</th>
+
+                                <th>文件名</th>
+                                <th>上传人</th>
+                                <th>文件操作</th>
+                                <th>记录操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(obj,index) in tableData" :key="obj.id">
+                                <td>{{obj.id}}</td>
+										<td>{{obj.name}}</td>
+										<td>{{obj.description}}</td>
+
+                                <td>{{obj.fileName}}</td>
+                                <td>{{obj.userName}}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" @click="viewModal(obj)">预览</button>
+                                    <button class="btn btn-success btn-xs" @click="downFile(obj.id)">下载</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" @click="init(obj)">更新</button>
+                                    <button class="btn btn-success btn-xs" @click="del(obj.id)">删除</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item" v-bind:class="{ disabled: preActive }">
+                                    <a class="page-link" href="javascript:void(0)"
+                                       v-on:click="loadTable(pageInfo.pageNum - 1)">上一页</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:void(0)" v-if="pageInfo.pageNum > 1" v-on:click="loadTable(pageInfo.pageNum - 1)">{{pageInfo.pageNum - 1}}</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" aria-disabled="true" href="javascript:void(0)">{{pageInfo.pageNum}}</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:void(0)" v-if="pageInfo.hasNextPage" v-on:click="loadTable(pageInfo.pageNum + 1)">{{pageInfo.pageNum + 1}}</a>
+                                </li>
+                                <li class="page-item" v-bind:class="{ disabled: nextActive }">
+                                    <a class="page-link" href="javascript:void(0)" v-on:click="loadTable(pageInfo.hasNextPage? (pageInfo.pageNum + 1) : pageInfo.pageNum)">下一页</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    文件预览
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cancel">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="height: 300px; text-align: center">
+                    <img id="view-img" v-if="imgShow" :src="url" alt="" style="width: 400px; ">
+                    <video v-if="videoShow" id="video-control" :src="url" controls="controls" style="width: 80%">
+                        您的浏览器不支持 video 标签。
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="mod">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title">请填写信息</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <input type="hidden" id="id" name="id" v-model="entity.id">
+                        <input type="hidden" name="level" v-model="entity.level">
+                        <input type="hidden" name="userId" v-model="entity.userId">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">名称</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" v-model="entity.name" placeholder="请输入名称" id="name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">描述</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" v-model="entity.description" placeholder="请输入描述" id="description">
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">上传文件</label>
+                            <div class="col-sm-7">
+                                <div style="margin-top: 8px">
+                                    <input id="upload-file-id" @change="upload" type="file" ref="file">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="update()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /. WRAPPER  -->
+
+<script src="../js/jquery-1.10.2.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.metisMenu.js"></script>
+<script src="../js/custom.js"></script>
+<script src="../js/my.js"></script>
+<script src="../js/vue2.6.11/axios.js"></script>
+<script src="../js/vue2.6.11/vue.min.js"></script>
+<script src="../js/element/index.js"></script>
+<!--文件上传js-->
+<script>
+    function msg(type, msg) {
+        Vue.prototype.$message({
+            type: type, // success（成功）、warning（警告）, error(错误)
+            message: msg,
+            duration: 2000,
+            offset: 100,
+            center: true
+        })
+    }
+
+    new Vue({
+        el: '#wrapper',
+        data: {
+
+            authority: [],
+            permission: [],
+            imgShow: false,
+            videoShow: true,
+            url: '',
+            name: '',
+            entity: {},
+            tableData: [],
+            pageInfo: {},
+            preActive: true,
+            nextActive: true,
+            user: {}
+        },
+        created: function () {
+            this.user = JSON.parse(localStorage.getItem('user'));
+            this.loadTable(1);
+            axios.get("/permission/6").then(res => {
+                if (res.data.code === '0') {
+                    this.permission = res.data.data;
+                } else {
+                    msg('error', res.data.msg);
+                }
+            });
+
+            axios.get("/authority").then(res => {
+                if (res.data.code === '0') {
+                    this.authority = res.data.data;
+                } else {
+                    msg('error', res.data.msg);
+                }
+            });
+
+
+        },
+        methods: {
+            loadTable(pageNum) {
+                let name = this.name === '' ? "all" : this.name;
+                axios.get("/foodsMaterialInfo/page/" + name + "?pageNum=" + pageNum).then(res => {
+                    if (res.data.code === '0') {
+                        this.tableData = res.data.data.list;
+                        this.pageInfo = res.data.data;
+                        this.preActive = !(this.pageInfo.hasPreviousPage);
+                        this.nextActive = !(this.pageInfo.hasNextPage);
+                    } else {
+                        msg('error', res.data.msg);
+                    }
+                });
+            },
+            upload: function () {
+                let files = this.$refs.file.files;
+                for (let i = 0; i < files.length; i++) {
+                    let formData = new FormData();
+                    formData.append('file', files[i]);
+                    axios.post('/files/upload', formData, {
+                        'Content-Type': 'multipart/form-data'
+                    }).then(res => {
+                        if (res.data.code === '0') {
+                            msg('success','文件上传成功');
+                            this.entity.fileId = res.data.data.id;
+                            this.entity.fileName = res.data.data.originName;
+                        } else {
+                            msg('error', res.data.msg);
+                        }
+                    })
+                }
+            },
+            viewModal: function (data) {
+                axios.get("/foodsMaterialInfo/" + data.id).then(res => {
+                    if (res.data.code === '0') {
+                        let info = res.data.data;
+                        this.url = '/files/download/' + res.data.data.fileId;
+                        if (/\.(png|jpg|gif|jpeg|webp)$/.test(info.fileName)) {
+                            this.imgShow = true;
+                            this.videoShow = false;
+
+                            let img = new Image();
+                            img.src = this.url;
+                            // 加载完成执行
+                            img.onload = function(){
+                                let scale = img.width / img.height;  // 图片的宽高比
+                                let width = 270 * scale;  // 先按照高度等比缩小
+                                if(width > 570) {   // 如果缩小后的宽度超出模态框（模态框宽598px），则再次按照宽度等比缩小
+                                    let height = 570 / scale;
+                                    $('#view-img').css('width', '570px').css('height', height + 'px');
+                                } else {
+                                    $('#view-img').css('width', width + 'px').css('height', '270px');
+                                }
+                            };
+                        } else if (/\.mp4$/.test(info.fileName)) {
+                            this.imgShow = false;
+                            this.videoShow = true;
+                        } else {
+                            msg('warning', '不支持该格式的文件预览');
+                            return;
+                        }
+                        $("#myModal").modal('show');
+                    } else {
+                        msg('error', res.data.msg);
+                    }
+                });
+            },
+            cancel: function () {
+                let $video = $("#video-control")[0];
+                if($video) {
+                    $video.pause();
+                }
+            },
+            downFile: function (id) {
+                axios.get("/foodsMaterialInfo/" + id).then(res => {
+                    if (res.data.code === '0') {
+                        location.href = '/files/download/' + res.data.data.fileId;
+                    } else {
+                        msg('error', res.data.msg);
+                    }
+                });
+            },
+            init(o) {
+                if (this.permission.indexOf(3) === -1) {
+                    msg('warning', '你没有权限操作');
+                    return;
+                }
+                this.entity = JSON.parse(JSON.stringify(o));
+                $('#mod').modal('show');
+            },
+            add() {
+                if (this.permission.indexOf(1) === -1) {
+                    msg('warning', '你没有权限操作');
+                    return;
+                }
+                this.entity = {};
+                $('#upload-file-id').val('');
+                $('#mod').modal('show');
+            },
+            update() {
+                if (checkValid(this.entity)) {
+                    if (!this.entity.id) {
+                        axios.post(
+                            "/foodsMaterialInfo", this.entity
+                        ).then(res => {
+                            if (res.data.code === '0') {
+                                msg('success', '添加成功');
+                                this.loadTable(1);
+                            } else {
+                                msg('error', res.data.msg);
+                            }
+                        })
+                    } else {
+                        axios.put(
+                            "/foodsMaterialInfo", this.entity
+                        ).then(res => {
+                            if (res.data.code === '0') {
+                                msg('success', '更新成功');
+                                this.loadTable(1);
+                            } else {
+                                msg('error', res.data.msg);
+                            }
+                        })
+                    }
+                }
+            },
+            del: function (id) {
+                if (this.permission.indexOf(2) === -1) {
+                    msg('warning', '你没有权限进行该操作');
+                    return;
+                }
+                let _this = this;
+                this.$confirm('确认删除？', '系统提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    cancelButtonClass: 'btn-custom-cancel',
+                    type: 'warning'
+                }).then(function(){
+                    axios.delete("/foodsMaterialInfo/" + id).then(res => {
+                        if (res.data.code === '0') {
+                            msg('success','文件删除成功');
+                            _this.loadTable(1);
+                        } else {
+                            msg('error', res.data.msg);
+                        }
+                    });
+                }).catch(function() {
+                    console.log("取消成功！");
+                });
+            },
+            logout() {
+                logout();
+            }
+        }
+    })
+</script>
+</body>
+</html>

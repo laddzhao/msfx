@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.NotesInfoCommentDao">
+
+    <select id="findAllVo" resultType="com.example.vo.NotesInfoCommentVo">
+        select `comment_notes_info`.*, `notes_info`.`name` as foreignName from `comment_notes_info`
+        left join `notes_info` on `comment_notes_info`.foreignId = `notes_info`.id
+        where 1=1
+        <if test="name != null and name != 'all' and name != ''">
+            and `comment_notes_info`.`content` like concat('%', #{name}, '%')
+        </if>
+        order by id
+    </select>
+
+    <select id="findByForeignId" resultType="com.example.entity.NotesInfoComment">
+        select * from `comment_notes_info` where foreignId = #{id}
+        order by id desc
+    </select>
+
+</mapper>
